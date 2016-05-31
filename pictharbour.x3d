@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<X3D xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dc="http://purl.org/dc/elements/1.1/" version="3.2" profile="Immersive"
+	xsi:noNamespaceSchemaLocation="http://www.web3d.org/specifications/x3d-3.2.xsd">
+	<head>
+		<meta name="title" content="pictharbour.x3d"/>
+		<meta name="description" lang="en-gb" content="Kelpie College's Pict Harbour campus."/>
+		<meta name="creator" content="Tavis Reddick"/>
+		<meta name="created" content="2010-04-01"/>
+		<meta name="modified" content="2010-06-22"/>
+		<meta name="version" content="0.1.4.7"/>
+		<meta name="reference" content="."/>
+		<meta name="rights" content="Copyright (c) sleepingdog.org.uk"/>
+		<meta name="subject" content="media graphics charting"/>
+		<meta name="accessRights" content="*enter permission statements or url here*"/>
+		<meta name="identifier" content="http://www.kelpiecollege.org.uk/pictcelt/pict/campus/pictharbour.x3d"/>
+		<meta name="generator" content="?.xslt"/>
+		<meta name="license" content="http://creativecommons.org/licenses/by-sa/2.5/scotland/"/>
+	</head>
+	<Scene>
+		<NavigationInfo DEF="PictHarbourNavigationInfo" avatarSize="0.25 1.6 0.75" headlight="false"
+			type="&quot;WALK&quot; &quot;ANY&quot;" speed="4.0"/>
+		<!-- Load external prototypes for sailing boat and seagull. -->
+		<!--
+		<ExternProtoDeclare name="SailBoatPrototype"
+			url="http://www.kelpiecollege.org.uk/pictcelt/pict/campus/SailBoatUnderSail.x3d#SailBoatPrototype" />
+		<ExternProtoDeclare name="SeaGullPrototype" url="http://www.kelpiecollege.org.uk/pictcelt/pict/campus/seagull.x3d#SeaGullPrototype" />
+		-->
+		<!-- 
+		<ExternProtoDeclare name="SubjectTree" url="http://www.kelpiecollege.org.uk/courses/orchard.x3d#SubjectTree" />
+		<ExternProtoDeclare name="CourseFruit" url="http://www.kelpiecollege.org.uk/courses/orchard.x3d#CourseFruit" />
+		<ExternProtoDeclare name="EnvironmentalBackground" url="http://www.sleepingdog.org.uk/x3d/environment/variables.x3d" />
+		<ExternProtoDeclare name="EnvironmentalSunMoon" url="http://www.sleepingdog.org.uk/x3d/environment/variables.x3d" />
+		<ExternProtoDeclare name="StreetLamp" url="http://www.sleepingdog.org.uk/x3d/environment/variables.x3d" />
+		-->
+		<!-- 
+		<ProtoInstance name="EnvironmentalBackground" />
+		<ProtoInstance name="EnvironmentalSunMoon" />
+		-->
+		<Background DEF="SkySea" groundAngle="1.57" groundColor="0 0 0.2, 0 0.1 0.3" skyAngle="1.4273"
+		skyColor="0.5 0.8 1, 0.2 0.4 0.8" topUrl="images/sun.png" />
+		<!-- 
+		<Background DEF="SkySeaNight" groundAngle="1.57" groundColor="0 0 0.2, 0 0.1 0.3" skyAngle="1.4273"
+			skyColor="0.5 0.8 1, 0.0 0.0 0.0" topUrl="http://www.sleepingdog.org.uk/x3d/environment/images/moon.png" />
+		-->
+		<DirectionalLight DEF="SunLight" on="true" ambientIntensity="0.2" color="1 1 0.9" direction="0 -0.5 -0.8" intensity="0.7"/>
+		<!-- Rotate the initial viewpoint so it faces the campus entrance from the harbour (aligned to campus grid). -->
+		<Transform rotation="0 1 0 0.593">
+			<Viewpoint description="Embarkation" orientation="0 0 1 0" position="0 1 -12"/>		
+		</Transform>
+		<!-- No prototypes in x3dom. -->
+		<Transform rotation="0 1 0 0.593">
+		<!-- Lay out the visible objects in the scene. -->
+			<Group DEF="LandMass">
+				<Group DEF="RoadNetwork">
+					<Transform translation="-72 -0.05 -156"><!-- from 204, 288 relative to top-left of tile + half 264, 264 -->
+						<Shape>
+							<Box size="264 0.1 264" solid="true"/>
+							<Appearance>
+								<ImageTexture repeatS="false" repeatT="false" url="KCPH-tile.svg"/>
+							</Appearance>
+						</Shape>
+					</Transform>
+				</Group>
+				<Group DEF="CampusBuildings">
+					<!-- Pict Harbour Tower is an eight storey building with a spiral ramp all the way up to the roof. Each floor is slightly smaller than the one below. -->
+					<Transform translation="12 0 -94">
+						<Group DEF="TowerFloor">
+							<Group DEF="TowerFloorArea">
+								<Transform translation="1.25 0 0">
+									<Shape>
+										<Box size="12.5 0.1 15" />
+										<Appearance DEF="TowerFloorStuff">
+											<Material diffuseColor="0.8 0.9 0.7"/>
+										</Appearance>
+									</Shape>						
+								</Transform>
+								<Transform translation="-6.25 0 -6.25">
+									<Shape>
+										<Box size="2.5 0.1 2.5" />
+										<Appearance USE="TowerFloorStuff" />
+									</Shape>
+								</Transform>
+								<Transform translation="-6.25 0 6.25">
+									<Shape>
+										<Box size="2.5 0.1 2.5" />
+										<Appearance USE="TowerFloorStuff" />
+									</Shape>
+								</Transform>
+							</Group>
+							<!-- 
+								<Shape>
+								<Extrusion DEF="TowerFloorArea"
+								crossSection="-9.0 -9.0, 9.0 -9.0, 9.0 9.0, -9.0 9.0, -9.0 5.0, -5.0 5.0, -5.0 -5.0, -9.0 -5.0, -9.0 -9.0"
+								solid="true" spine="0 0 0, 0 0.1 0" ccw="false"/>
+								<Appearance DEF="TowerFloorStuff">
+								<Material diffuseColor="0.8 0.9 0.7"/>
+								</Appearance>
+								</Shape>
+							-->
+							<!-- Internal ramp section. -->
+							<Transform translation="1 2 -6.25">
+								<Transform rotation="0 0 1 0.46365">
+									<Shape>
+										<Box size="8.9443 0.1 2.5" solid="true"/>
+										<Appearance USE="TowerFloorStuff"/>
+									</Shape>
+								</Transform>
+							</Transform>
+							<!-- 
+								<Transform translation="0 2 -6.5">
+								<Transform rotation="0 0 1 0.38050637711">
+								<Shape>
+								<Box size="10.77 0.1 2.5" solid="true"/>
+								<Appearance USE="TowerFloorStuff"/>
+								</Shape>
+								</Transform>
+								</Transform>
+							-->
+							<Transform translation="-8.5 0 8.5">
+								<Shape DEF="TowerCornerButtress">
+									<Appearance DEF="TowerCladStuff">
+										<Material diffuseColor="0.82 0.78 0.74"/>
+									</Appearance>
+									<IndexedFaceSet DEF="TowerCornerButtressIFS"
+										coordIndex="0 3 7 4 -1 4 7 6 5 -1 3 2 6 7 -1 2 1 5 6 -1 0 4 5 1 -1" convex="true" creaseAngle="0.0"
+										solid="true">
+										<Coordinate
+											point="
+											-1.5 0.0 -1.5
+											1.5 0.0 -1.5
+											1.5 0.0 1.5
+											-1.5 0.0 1.5
+											-1.25 4.0 -1.85
+											1.85 4.0 -1.85
+											1.85 4.0 1.25
+											-1.25 4.0 1.25"
+										/>
+									</IndexedFaceSet>
+								</Shape>
+							</Transform>
+							<Transform translation="0 0 8.25">
+								<Group DEF="TowerWindowWall">
+									<Transform translation="-5.25 0 0">
+										<Group DEF="TowerWindowWallBlock">
+											<Shape DEF="WindowWall">
+												<IndexedFaceSet
+													coordIndex="0 4 13 8 -1 8 11 17 14 -1 14 17 16 15 -1 16 10 9 15 -1 16 2 6 10 -1 2 1 5 6 -1 1 15
+													9 5 -1 0 3 7 4 -1 3 11 12 7 -1 4 5 9 13 -1 7 12 10 6 -1 13 9 10 12 -1 4 7 6 5 -1 0 1 2 3 -1">
+													<Coordinate
+														point="
+														-1.75 0 0.75
+														-1.75 0 -0.75
+														1.75 0 -0.75
+														1.75 0 0.75
+														-1.25 1 0.25
+														-1.25 1 -0.75
+														1.25 1 -0.75
+														1.25 1 0.25
+														-1.75 3.5 0.25
+														-1.25 3.5 -0.75
+														1.25 3.5 -0.75
+														1.75 3.5 0.25
+														1.25 3.5 0.25
+														-1.25 3.5 0.25
+														-1.75 4 0.25
+														-1.75 4 -0.75
+														1.75 4 -0.75
+														1.75 4 0.25"
+													/>
+												</IndexedFaceSet>
+												<Appearance USE="TowerCladStuff"/>
+											</Shape>
+											<Transform translation="0 2.25 0">
+												<Shape>
+													<Appearance DEF="WindowGlass">
+														<Material diffuseColor="0.8 0.8 0.8" shininess="0.9" transparency="0.9"/>
+													</Appearance>
+													<Box size="2.5 2.5 0.5" solid="false"/>
+												</Shape>
+											</Transform>
+										</Group>
+									</Transform>
+									<Transform translation="-1.75 0 0">
+										<Group USE="TowerWindowWallBlock"/>
+									</Transform>
+									<Transform translation="1.75 0 0">
+										<Group USE="TowerWindowWallBlock"/>
+									</Transform>
+									<Transform translation="5.25 0 0">
+										<Group USE="TowerWindowWallBlock"/>
+									</Transform>
+								</Group>
+							</Transform>
+							<Transform translation="8.5 0 8.5">
+								<Transform rotation="0 1 0 1.57">
+									<Shape USE="TowerCornerButtress"/>
+								</Transform>
+							</Transform>
+							<Transform translation="-8.5 0 -8.5">
+								<Transform rotation="0 1 0 -1.57">
+									<Shape USE="TowerCornerButtress"/>
+								</Transform>
+							</Transform>
+							<Transform translation="8.5 0 -8.5">
+								<Transform rotation="0 1 0 3.14">
+									<Shape USE="TowerCornerButtress"/>
+								</Transform>
+							</Transform>
+							<Transform translation="8.25 0 0">
+								<Transform rotation="0 1 0 1.57">
+									<Shape USE="TowerWindowWall"/>
+								</Transform>
+							</Transform>
+							<Transform translation="0 0 -8.25">
+								<Transform rotation="0 1 0 3.14">
+									<Shape USE="TowerWindowWall"/>
+								</Transform>
+							</Transform>
+							<!-- Keep one floor side open (not filled with window wall) to allow for ground floor entrance. -->
+						</Group>
+						<!-- Tower 1st floor -->
+						<Transform rotation="0 1 0 -1.57">
+							<Transform translation="0 4 0">
+								<Transform scale="0.95 0.95 0.95">
+									<Group USE="TowerFloor"/>
+									<Group DEF="FourthTowerWindowWall">
+										<Transform translation="-8.25 0 0">
+											<Transform rotation="0 1 0 -1.57">
+												<Shape USE="TowerWindowWall"/>
+											</Transform>
+										</Transform>
+									</Group>
+								</Transform>
+							</Transform>
+						</Transform>
+						<!-- Tower 2nd floor -->
+						<Transform rotation="0 1 0 3.14">
+							<Transform translation="0 7.8 0">
+								<Transform scale="0.9025 0.9025 0.9025">
+									<Group USE="TowerFloor"/>
+									<Group USE="FourthTowerWindowWall"/>
+								</Transform>
+							</Transform>
+						</Transform>
+						<!-- Tower 3rd floor -->
+						<Transform rotation="0 1 0 1.57">
+							<Transform translation="0 11.41 0">
+								<Transform scale="0.85738 0.85738 0.85738"><!-- 0.857375 -->
+									<Group USE="TowerFloor"/>
+									<Group USE="FourthTowerWindowWall"/>
+								</Transform>
+							</Transform>
+						</Transform>
+						<!-- Tower 4th floor -->
+						<Transform translation="0 14.84 0"><!-- 14.8395 -->
+							<Transform scale="0.81451 0.81451 0.81451"><!-- 0.81450625 -->
+								<Group USE="TowerFloor"/>
+								<Group USE="FourthTowerWindowWall"/>
+							</Transform>
+						</Transform>
+						<!-- Tower 5th floor -->
+						<Transform rotation="0 1 0 -1.57">
+							<Transform translation="0 18.098 0"><!-- 18.097525 -->
+								<Transform scale="0.77379 0.77379 0.77379"><!-- 0.7737809375 -->
+									<Group USE="TowerFloor"/>
+									<Group USE="FourthTowerWindowWall"/>
+								</Transform>
+							</Transform>
+						</Transform>
+						<!-- Tower 6th floor -->
+						<Transform rotation="0 1 0 3.14">
+							<Transform translation="0 21.193 0"><!-- 21.19264875 -->
+								<Transform scale="0.73509 0.73509 0.73509"><!-- 0.73509189062 -->
+									<Group USE="TowerFloor"/>
+									<Group USE="FourthTowerWindowWall"/>
+								</Transform>
+							</Transform>
+						</Transform>
+						<!-- Tower 7th floor -->
+						<Transform rotation="0 1 0 1.57">
+							<Transform translation="0 24.133 0"><!-- 24.13301631248 -->
+								<Transform scale="0.69834 0.69834 0.69834"><!-- 0.69833729609 -->
+									<Group USE="TowerFloor"/>
+									<Group USE="FourthTowerWindowWall"/>
+								</Transform>
+							</Transform>
+						</Transform>
+						<!-- Roof. -->
+						<Transform translation="0 26.926 0"><!-- 26.92636549684 -->
+							<Transform scale="0.66342 0 0.66342"><!-- 0.66342043129 -->
+								<!-- <Group USE="TowerFloorArea" /> -->
+								<!-- 
+									<Shape>
+									<Extrusion USE="TowerFloorArea" />
+									<Appearance>
+									<Material diffuseColor="0.2 0.2 0.2" shininess="0" />
+									</Appearance>
+									</Shape>
+								-->
+							</Transform>
+						</Transform>
+					</Transform>
+					<!-- Pict Harbour Old Building will be a hollow square, three identical storeys high, with ramps in each corner. -->
+					<Transform translation="-30 4.5 -84">
+						<Transform translation="22 0 -22">
+							<Group DEF="OldBuildingCornerStack">
+								<Group DEF="OldBuildingCorner">
+									<!-- Interior door post. -->
+									<Transform translation="-2.75 -3 2.75">
+										<Shape>
+											<Box size="0.5 3.0 0.5" />
+											<Appearance>
+												<Material DEF="OldBuildingInterior" diffuseColor="0.8 0.8 0.5" />
+											</Appearance>
+										</Shape>								
+									</Transform>
+									<!-- Four walls. -->
+									<Transform translation="-2.75 -3 -1.25">
+										<Shape DEF="OldBuildingCornerWallShort">
+											<Box size="0.5 3.0 3.5" />
+											<Appearance DEF="OldBuildingExterior">
+												<Material diffuseColor="0.8 0.7 0.6" />
+											</Appearance>
+										</Shape>
+									</Transform>
+									<Transform translation="1.25 -3 2.75">
+										<Transform rotation="0 1 0 1.57">
+											<Shape USE="OldBuildingCornerWallShort" />
+										</Transform>
+									</Transform>
+									<Transform translation="0 -3 -2.75">
+										<Shape DEF="OldBuildingCornerWallLong">
+											<Box size="6.0 3 0.5" />
+											<Appearance USE="OldBuildingExterior" />
+										</Shape>
+									</Transform>
+									<Transform translation="2.75 -3 0">
+										<Transform rotation="0 1 0 1.57">
+											<Shape USE="OldBuildingCornerWallLong" />
+										</Transform>
+									</Transform>
+									<!-- Halfway landings. -->
+									<Transform translation="-1.75 -4.5 0">
+										<Shape DEF="OldBuildingCornerLanding">
+											<Box size="1.5 0.25 5" />
+											<Appearance DEF="OldBuildingInteriorFlooring">
+												<Material diffuseColor="0.5 0.8 0.7" />
+											</Appearance>
+										</Shape>
+									</Transform>
+									<Transform translation="1.75 -3 0">
+										<Shape USE="OldBuildingCornerLanding" />
+									</Transform>
+									<!-- Ramps. -->
+									<Transform translation="0 -3.75 -1.5">
+										<Transform rotation="0 0 1 0.6435"><!-- 0.6435011088 -->
+											<Shape DEF="OldBuildingCornerRamp">
+												<Box size="2.5 0.1 2" />
+												<Appearance USE="OldBuildingInteriorFlooring" />
+											</Shape>
+										</Transform>
+									</Transform>
+									<Transform translation="0 -2.25 1.5">
+										<Transform rotation="0 0 1 -0.6435"><!-- -0.6435011088 -->
+											<Shape USE="OldBuildingCornerRamp" />
+										</Transform>
+									</Transform>
+								</Group>
+								<Transform translation="0 3 0">
+									<Group USE="OldBuildingCorner" />
+								</Transform>
+								<Transform translation="0 6 0">
+									<Group USE="OldBuildingCorner" />
+								</Transform>
+							</Group>
+						</Transform>
+						<Transform translation="-22 0 -22">
+							<Transform rotation="0 1 0 1.57">
+								<Group USE="OldBuildingCornerStack" />
+							</Transform>
+						</Transform>
+						<Transform translation="-22 0 22">
+							<Transform rotation="0 1 0 3.14">
+								<Group USE="OldBuildingCornerStack" />
+							</Transform>
+						</Transform>
+						<Transform translation="22 0 22">
+							<Transform rotation="0 1 0 -1.57">
+								<Group USE="OldBuildingCornerStack" />
+							</Transform>
+						</Transform>
+						<!-- Indoor square carpet. -->
+						<Transform translation="0 -4.4 0">
+							<Shape>
+								<Box size="32 0.1 32" />
+								<Appearance>
+								<Material DEF="KelpieCarpet" diffuseColor="0 0 1" shininess="0" />
+								<!--<ImageTexture repeatS="false" repeatT="false" url="Atrium.svg"/>-->
+								</Appearance>
+							</Shape>
+						</Transform>
+						<!-- Plinth and seating. -->
+						<Transform translation="0 -4.4 0">
+							<Shape>
+								<Box size="8 0.2 8" />
+								<Appearance DEF="Slablike">
+									<Material diffuseColor="0.7 0.7 0.7" />
+								</Appearance>
+							</Shape>
+						</Transform>
+						<!-- Wing of three floor sections. -->
+						<!-- Wing section. -->
+						<Group DEF="OldBuildingWing">
+							<Transform translation="0 -4.5 -20">
+								<Group DEF="OldBuildingWingSection">
+									<Shape>
+										<Extrusion crossSection="-19 -4, -19 -1.5, -19.5 -1.5, -19.5 0.5, -19 0.5, -19 1, -16 4, 16 4, 19 1, 19 0.5, 19.5
+											0.5, 19.5 -1.5, 19 -1.5, 19 -4, -19 -4" solid="false"
+											spine="0 -0.1 0, 0 0.1 0"
+											ccw="false"/>
+										<Appearance>
+											<Material DEF="KelpieFlooring" diffuseColor="0 0.8 0" shininess="0" />
+										</Appearance>
+									</Shape>
+									<Group DEF="OldBuildingWingWall">
+										<Group DEF="OldBuildingWingWallWindowSection">
+											<Transform translation="0 0 -4">
+												<Transform rotation="0 1 0 3.14">
+													<Shape DEF="OldWindowWall">
+														<IndexedFaceSet 
+															coordIndex="0 2 3 1 -1 8 10 11 9 -1 2 4 5 3 -1 8 9 7 6 -1 8 6 4 2 -1 7 9 3 5 -1
+																4 6 17 15 -1 7 5 14 16 -1 4 15 14 5 -1 6 7 16 17 -1
+																12 14 15 13 -1 18 19 17 16 -1 12 18 16 14 -1 15 17 19 13 -1">
+															<Coordinate
+																point="
+																-1.1 3 0.5
+																1.1 3 0.5
+																-1.1 2.75 0.25
+																1.1 2.75 0.25
+																-0.5 2.5 0.25
+																0.5 2.5 0.25
+																-0.5 0.5 0.25
+																0.5 0.5 0.25
+																-1.1 0.25 0.25
+																1.1 0.25 0.25
+																-1.1 0 0.5
+																1.1 0 0.5
+																1.1 3 -0.25
+																-1.1 3 -0.25
+																0.5 2.5 -0.25
+																-0.5 2.5 -0.25
+																0.5 0.5 -0.25
+																-0.5 0.5 -0.25
+																1.1 0 -0.25
+																-1.1 0 -0.25
+																"
+															/>
+														</IndexedFaceSet>
+														<Appearance USE="OldBuildingExterior"/>
+													</Shape>
+													<Transform translation="0 1.5 0">
+														<Shape>
+															<Box size="1 2 0.25" solid="false" />
+															<Appearance DEF="OldWindowGlass">
+																<Material diffuseColor="0.8 0.8 0.8" shininess="0.9" transparency="0.9"/>
+															</Appearance>
+														</Shape>							
+													</Transform>								
+												</Transform>								
+											</Transform>
+										</Group>
+										<Transform translation="-2 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="-4 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="-6 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="-8 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="-10 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="-12 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="-14 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="-16 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="-18 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="2 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="4 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="6 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="8 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="10 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="12 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="14 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="16 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+										<Transform translation="18 0 0">
+											<Group USE="OldBuildingWingWallWindowSection" />
+										</Transform>
+									</Group>
+									<Group DEF="OldBuildingWingInteriorWalls">
+										<Transform translation="-17 1.5 -2">
+											<Shape DEF="OldBuildingWingInteriorWallShort">
+												<Box size="0.2 3 4" />
+												<Appearance DEF="OldBuildingWingInteriorWallStuff">
+													<Material diffuseColor="0.8 0.8 0.7" />
+												</Appearance>
+											</Shape>
+										</Transform>
+										<Transform translation="17 1.5 -2">
+											<Shape USE="OldBuildingWingInteriorWallShort" />
+										</Transform>
+										<Transform translation="-16 1.5 1">
+											<Transform rotation="0 1 0 0.785">
+												<Shape DEF="OldBuildingWingInteriorWallDiagonal">
+													<Box size="0.2 3 3.11" />
+													<Appearance USE="OldBuildingWingInteriorWallStuff" />
+												</Shape>
+											</Transform>
+										</Transform>
+										<Transform translation="16 1.5 1">
+											<Transform rotation="0 1 0 -0.785">
+												<Shape USE="OldBuildingWingInteriorWallDiagonal" />
+											</Transform>
+										</Transform>
+										<Transform translation="-14 1.5 2">
+											<Shape DEF="OldBuildingWingInteriorWallShortest">
+												<Box size="2 3 0.2" />
+												<Appearance USE="OldBuildingWingInteriorWallStuff" />
+											</Shape>
+										</Transform>
+										<Transform translation="14 1.5 2">
+											<Shape USE="OldBuildingWingInteriorWallShortest" />
+										</Transform>
+										<Transform translation="-9 1.5 -1">
+											<Shape DEF="OldBuildingWingInteriorWallRoomDivider">
+												<Box size="0.2 3 6" />
+												<Appearance USE="OldBuildingWingInteriorWallStuff" />
+											</Shape>
+										</Transform>
+										<Transform translation="1 1.5 -1">
+											<Shape USE="OldBuildingWingInteriorWallRoomDivider" />
+										</Transform>
+										<Transform translation="9 1.5 -1">
+											<Shape USE="OldBuildingWingInteriorWallRoomDivider" />
+										</Transform>
+										<Transform translation="-8.5 1.5 2">
+											<Shape DEF="OldBuildingWingInteriorWallInfacing1">
+												<Box size="6 3 0.2" />
+												<Appearance USE="OldBuildingWingInteriorWallStuff" />
+											</Shape>
+										</Transform>
+										<Transform translation="8.5 1.5 2">
+											<Shape USE="OldBuildingWingInteriorWallInfacing1" />
+										</Transform>
+										<Transform translation="0 1.5 2">
+											<Shape DEF="OldBuildingWingInteriorWallInfacing2">
+												<Box size="8 3 0.2" />
+												<Appearance USE="OldBuildingWingInteriorWallStuff" />
+											</Shape>
+										</Transform>
+									</Group>
+								</Group>
+							</Transform>
+							<!-- First floor. -->
+							<Transform translation="0 -1.5 -20">
+								<Group USE="OldBuildingWingSection" />
+							</Transform>
+							<Transform translation="0 -1 -16">
+								<Shape DEF="OldBuildingBalustrade">
+									<Box size="32 1 0.1" />
+									<Appearance>
+										<Material diffuseColor="1 1 1" transparency="0.5" />
+									</Appearance>
+								</Shape>
+							</Transform>
+							<!-- Second floor. -->
+							<Transform translation="0 1.5 -20">
+								<Group USE="OldBuildingWingSection" />
+							</Transform>
+							<Transform translation="0 2 -16">
+								<Shape USE="OldBuildingBalustrade" />
+							</Transform>
+						</Group>
+						<!-- Copy this wing to two other sides. -->
+						<Transform translation="0 0 0">
+							<Transform rotation="0 1 0 3.14">
+								<Group USE="OldBuildingWing" />
+							</Transform>
+						</Transform>
+						<Transform translation="0 0 0">
+							<Transform rotation="0 1 0 1.57">
+								<Group USE="OldBuildingWing" />
+							</Transform>
+						</Transform>
+						<!-- The entrance wing. -->
+						<Transform translation="20 -1.5 0">
+							<Transform rotation="0 1 0 -1.57">
+								<Group USE="OldBuildingWingSection" />
+								<Transform translation="0 0.5 4">
+									<Shape USE="OldBuildingBalustrade" />
+								</Transform>
+							</Transform>
+						</Transform>
+						<Transform translation="20 1.5 0">
+							<Transform rotation="0 1 0 -1.57">
+								<Group USE="OldBuildingWingSection" />
+								<Transform translation="0 0.5 4">
+									<Shape USE="OldBuildingBalustrade" />
+								</Transform>
+							</Transform>
+						</Transform>
+					</Transform>
+					<!-- Three Hive Domes occupy a square near the dolphins and the orchard. -->
+					<Transform translation="-132 -0.05 -216">
+						<Shape>
+							<Box size="96 0.1 96" />
+							<Appearance>
+								<Material diffuseColor="0.9 0.9 0.9"/>
+							</Appearance>
+						</Shape>
+						<Transform translation="-24 0 -24">
+							<Shape>
+								<Sphere radius="18" />
+								<Appearance DEF="HiveDomeStuff">
+									<Material diffuseColor="1 1 1"/>
+								</Appearance>
+							</Shape>
+						</Transform>
+						<Transform translation="32 0 -30">
+							<Shape>
+								<Sphere radius="12" />
+								<Appearance USE="HiveDomeStuff" />
+							</Shape>
+						</Transform>
+						<Transform translation="16 0 20">
+							<Shape>
+								<Sphere radius="24" />
+								<Appearance USE="HiveDomeStuff" />
+							</Shape>
+						</Transform>
+					</Transform>
+					<!-- The Dolphin Quarter accommodates our cetacean friends. -->
+					<Transform translation="-132 -12.05 -96">
+						<Shape>
+							<Box size="96 0.1 96" />
+							<Appearance>
+								<Material DEF="DolphinAquarium" emissiveColor="1 1 1"/>
+							</Appearance>
+						</Shape>
+					</Transform>
+					<Transform translation="-132 -6 -142">
+						<Shape>
+							<Box size="96 12 4" />
+							<Appearance>
+								<Material USE="DolphinAquarium" />
+							</Appearance>
+						</Shape>
+					</Transform>
+					<Transform translation="-180 -6 -96">
+						<Shape DEF="DolphinAquariumWall">
+							<Box size="4 12 96" />
+							<Appearance>
+								<Material USE="DolphinAquarium" />
+							</Appearance>
+						</Shape>
+					</Transform>
+					<Transform translation="-88 -6 -96">
+						<Shape USE="DolphinAquariumWall" />
+					</Transform>
+					<!-- The Course Orchard supports subject trees and course fruit. -->
+				</Group>
+				<Group DEF="Harbour">
+					<Transform translation="0 -5 -12">
+						<Shape>
+							<Box size="240.1 10 24.1" solid="true"/>
+							<Appearance>
+								<Material DEF="HarbourWallStuff" diffuseColor="0.5 0.5 0.5"/>
+							</Appearance>
+						</Shape>
+					</Transform>
+					<Transform translation="100 -5 78">
+						<Shape>
+							<Box size="24 10 180.1" solid="true"/>
+							<Appearance>
+								<Material USE="HarbourWallStuff" />
+							</Appearance>
+						</Shape>
+					</Transform>
+					<Transform translation="-100 -5 78">
+						<Shape>
+							<Box size="24 10 180.1" solid="true"/>
+							<Appearance>
+								<Material USE="HarbourWallStuff" />
+							</Appearance>
+						</Shape>
+					</Transform>
+				</Group>
+				<Group DEF="Sea">
+					<Transform translation="0 -18 174">
+						<Shape>
+							<Box size="960 24 636" solid="true" />
+							<Appearance>
+								<Material diffuseColor="0 0.1 0.3" transparency="0.5" />
+							</Appearance>
+						</Shape>
+					</Transform>
+				</Group>
+			</Group>
+		</Transform>
+	</Scene>
+</X3D>
