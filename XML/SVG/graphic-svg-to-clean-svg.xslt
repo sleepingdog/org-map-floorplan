@@ -12,6 +12,7 @@
     </xd:doc>
     <xsl:output indent="yes" media-type="image/svg+xml" method="xml" xml:space="default" />
     <xsl:include href="copy.xslt" />
+    <xsl:param name="debug" as="xs:boolean" select="false()" />
     <xsl:variable name="floorColour" select="'#003300'" />
     <xsl:variable name="floorStyleName" select="'floor'" />
     <xsl:variable name="roomStyleName" select="'room'" />
@@ -23,6 +24,9 @@
     </xsl:template>
     <xsl:template match="svg:svg">
         <xsl:copy>
+            <xsl:if test="$debug = true()">
+                <xsl:attribute name="class" select="'debug'" />
+            </xsl:if>
             <xsl:copy-of select="@*" />
             <xsl:element name="defs">
                 <xsl:element name="style">
@@ -41,6 +45,15 @@
                     }
                     .door {
                         fill: #993333;
+                    }
+                    .debug #F0 {
+                        display: none;
+                    }
+                    .debug #F2 {
+                        display: none;
+                    }
+                    .debug #Atrium {
+                        display: none;
                     }
                 </xsl:text>
                 </xsl:element>
@@ -71,11 +84,11 @@
                 <xsl:attribute name="class" select="$roomStyleName"/>
             </xsl:element>
             <xsl:element name="path">
-                <xsl:attribute name="d" select="svg:g[2]/svg:g[1]/svg:path[1]/@d"/>
+                <xsl:attribute name="d" select="svg:g[2]/svg:g[1]/svg:path[1]/@d | svg:g[2]/svg:path[1]/@d"/><!-- For some reason, floor 1 rooms have a different structure. -->
                 <xsl:attribute name="class" select="$waypointStyleName"/>
             </xsl:element>
             <xsl:element name="path">
-                <xsl:attribute name="d" select="svg:g[3]/svg:path[1]/@d"/>
+                <xsl:attribute name="d" select="svg:g[3]/svg:path[1]/@d | svg:path[1]/@d"/><!-- For some reason, floor 1 rooms have a different structure. -->
                 <xsl:attribute name="class" select="$doorStyleName"/>
             </xsl:element>
         </xsl:element>
