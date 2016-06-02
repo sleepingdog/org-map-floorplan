@@ -1,4 +1,4 @@
-# org-map-floorpan
+# org-map-floorpan (organizational maps and floorplans)
 ## Description
 A working demonstration of a web-based, interactive, data-driven organisational campus-based map with floor-plans.
 
