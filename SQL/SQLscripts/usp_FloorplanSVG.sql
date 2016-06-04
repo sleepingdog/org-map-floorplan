@@ -17,6 +17,7 @@ GO
 -- Author:		Tavis Reddick
 -- Create date: 2016-06-02
 -- Description:	Returns a floorplan in SVG.
+-- Modified on 2016-06-04 to add root svg element.
 -- =============================================
 ALTER PROCEDURE dbo.usp_FloorplanSVG
 	-- Add the parameters for the stored procedure here
@@ -31,7 +32,7 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-DECLARE @Rooms AS XML, @Floor AS XML;
+DECLARE @Rooms AS XML, @Floor AS XML, @Svg AS XML;
 SET @Rooms = (SELECT (SELECT SVG) -- we don't want to add any new elements so use subquery
 		FROM dbo.Room
 		WHERE CampusID = @campusId
@@ -47,13 +48,18 @@ SET @Floor.modify('
 	declare namespace svg="http://www.w3.org/2000/svg";
 	insert sql:variable("@Rooms") as last
 	into (svg:g)[1]
-')
-;
-SELECT @Floor;
+');
+SET @Svg = (SELECT SVG FROM dbo.Building WHERE BuildingID = @buildingId);
+SET @Svg.modify('
+	declare namespace svg="http://www.w3.org/2000/svg";
+	insert sql:variable("@Floor") as last
+	into (svg:svg)[1]
+');
+SELECT @Svg;
 END
-GO
 /*
 --Test
 EXEC dbo.usp_FloorplanSVG @campusId = 'PH', @buildingId = 'OB', @floorId = 'F0';
 
 */
+GO
