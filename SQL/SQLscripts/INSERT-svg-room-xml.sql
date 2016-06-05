@@ -16,10 +16,18 @@ SELECT
 	RoomSVG.value('substring(@id, 10, 3)', 'VARCHAR(5)') AS RoomID,
 	RoomSVG.value('substring(@id, 7, 2)', 'VARCHAR(5)') AS FloorID,
 	RoomSVG.value('substring(@id, 4, 2)', 'VARCHAR(5)') AS BuildingID,
-	RoomSVG.value('substring(@id, 1, 2)', 'VARCHAR(5)') AS CampusID,
-	RoomTable.RoomSVG.query('.') AS SVG -- the XML source itself
-FROM @SVG.nodes('/svg:svg/svg:g[substring(@id, 1, 1) = "F"]/svg:g[substring(@id, 1, 7) = "PH-OB-F" and substring(@id, 10, 1) = "R"]') AS RoomTable(RoomSVG);
+	RoomSVG.value('substring(@id, 1, 2)', 'VARCHAR(5)') AS CampusID
+	, RoomTable.RoomSVG.query('.') AS SVG -- the XML source itself
+FROM @SVG.nodes('/svg/g[substring(@id, 1, 1) = "F"]/g[substring(@id, 1, 7) = "PH-OB-F" and substring(@id, 10, 1) = "R"]') AS RoomTable(RoomSVG);
+;
+SELECT * FROM dbo.Room;
 GO
-SELECT *
-FROM dbo.Room;
+-- Ugly workaround to remove prefixes and add default namespace in SVG XML
+UPDATE dbo.Room
+	SET SVG = CAST(REPLACE(REPLACE(CAST (SVG AS NVARCHAR(MAX)), 'svg:', ''), 'xmlns:svg="http://www.w3.org/2000/svg"', 'xmlns="http://www.w3.org/2000/svg"') AS XML)
+;
+SELECT * FROM dbo.Room;
 GO
+/*
+DELETE FROM dbo.Room
+*/

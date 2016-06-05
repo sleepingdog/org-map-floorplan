@@ -35,6 +35,10 @@ UPDATE dbo.Floor
 		AND FloorId = FloorSVG.value('@id', 'VARCHAR(5)')
 ;
 GO
+-- Ugly workaround to remove prefixes and add default namespace in SVG XML
+UPDATE dbo.Floor
+	SET SVG = CAST(REPLACE(REPLACE(CAST (SVG AS NVARCHAR(MAX)), 'svg:', ''), 'xmlns:svg="http://www.w3.org/2000/svg"', 'xmlns="http://www.w3.org/2000/svg"') AS XML)
+;
 SELECT *
 FROM dbo.Floor;
 GO
