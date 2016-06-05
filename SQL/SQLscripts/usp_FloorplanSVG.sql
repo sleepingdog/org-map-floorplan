@@ -24,7 +24,8 @@ ALTER PROCEDURE dbo.usp_FloorplanSVG
 	@campusId VARCHAR(5), 
 	@buildingId VARCHAR(5),
 	@floorId VARCHAR(5),
-	@roomId VARCHAR(5) = NULL -- optionally highlight a room
+	@roomId VARCHAR(5) = NULL, -- optionally highlight a room
+	@internetType VARCHAR(25) = 'image/svg+xml'
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -32,7 +33,7 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-DECLARE @Rooms AS XML, @Floor AS XML, @Svg AS XML;
+DECLARE @Rooms AS XML, @Floor AS XML, @Svg AS XML, @Html AS XML, @Navigation AS XML;
 SET @Rooms = (SELECT (SELECT SVG) -- we don't want to add any new elements so use subquery
 		FROM dbo.Room
 		WHERE CampusID = @campusId
@@ -55,11 +56,47 @@ SET @Svg.modify('
 	insert sql:variable("@Floor") as last
 	into (svg:svg)[1]
 ');
-SELECT @Svg;
+IF @internetType = 'text/html'
+	BEGIN
+		DECLARE @Title AS NVARCHAR(255);
+		SET @Title = 
+			(SELECT TOP 1 Title FROM dbo.Campus WHERE CampusID = @campusId) + ' ' +
+			(SELECT TOP 1 Title FROM dbo.Building WHERE BuildingID = @buildingId) + ' ' +
+			(SELECT TOP 1 Title FROM dbo.Floor WHERE FloorID = @floorId) + ' floor'
+		SET @Navigation = (
+			SELECT '/campus' AS 'a/@href', 'Campus ' + 'PH' AS a
+			UNION
+			SELECT '/campus(' + CampusID + ')/building(' + BuildingID + ')/floor(' + FloorID + ')' AS 'a/@href', FloorID AS a
+			FROM dbo.Floor
+			WHERE CampusID = @campusId
+				AND BuildingID = @buildingId
+				FOR XML PATH('li'), ROOT('ul')
+		);
+		SET @Html = '<html><head><title>' + @Title + '</title>' +
+			'<meta charset="utf-8" />
+			<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+			<link href="/style/kelpie_styles.css" rel="stylesheet" type="text/css" />
+			<link href="/style/kelpie_map.css" rel="stylesheet" type="text/css" />' +
+			'</head><body><h1>' + @Title + '</h1>' + 
+			'<nav>' +
+			CAST(@Navigation AS NVARCHAR(MAX)) +
+			'</nav>' +
+			'</body></html>'
+		SET @Html.modify('
+			insert sql:variable("@Svg") as last
+			into (html/body)[1]
+		')
+	END;
+SELECT
+	CASE @internetType
+		WHEN 'image/svg+xml' THEN @Svg
+		WHEN 'text/html' THEN @Html
+	END;
 END
 /*
 --Test
 EXEC dbo.usp_FloorplanSVG @campusId = 'PH', @buildingId = 'OB', @floorId = 'F0';
+EXEC dbo.usp_FloorplanSVG @campusId = 'PH', @buildingId = 'OB', @floorId = 'F1', @internetType = 'text/html';
 
 */
 GO
